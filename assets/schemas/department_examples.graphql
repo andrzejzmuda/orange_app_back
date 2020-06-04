@@ -1,0 +1,37 @@
+mutation new{
+  createDepartment(name:"Kable", detailedName: "SK"){
+    id
+    name
+    detailedName
+  }
+}
+
+mutation edit{
+  editDepartment(id:2, name:"CU", detailedName: "PP"){
+    name
+    detailedName
+    id
+  }
+}
+
+mutation del{
+  deleteDepartment(id:3){
+    id
+  }
+}
+
+query findDept{
+  department(search: "kable"){
+    name
+    detailedName
+    id
+  }
+}
+
+query findDeptId{
+  department(id: 4){
+    name
+    detailedName
+    id
+  }
+}

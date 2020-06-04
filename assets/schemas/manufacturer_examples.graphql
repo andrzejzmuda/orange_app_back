@@ -1,0 +1,25 @@
+mutation newMan{
+  createManufacturer(name:"Test123"){
+    id
+    name
+  }
+}
+
+mutation editMan{
+  editManufacturer(id:3, name:"test456"){
+    id
+    name
+  }
+}
+
+mutation delMan{
+  deleteManufacturer(id:5){
+    id
+  }
+}
+
+query findMan{
+  manufacturer(search: "ter"){
+    name
+  }
+}

@@ -1,0 +1,4 @@
+*.pyc
+*/migrations
+.idea
+orange_app_back/settings.py

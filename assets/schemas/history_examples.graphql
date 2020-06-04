@@ -1,0 +1,54 @@
+mutation newHist{
+  createHistory(
+    asset:3
+    department:1
+    inventoried:"2020-06-04T18:41:55+00:00"
+    owner:"abc"
+    status: 1
+  ){
+    id
+    entryDate
+    inventoried
+    owner
+    status{
+      one(id:1){
+        status
+      }
+    }
+  }
+}
+
+mutation editHist{
+  editHistory(
+    id:9
+    asset:2
+    department:2
+    inventoried:"2020-06-04T19:41:55+00:00"
+    owner:"def"
+    status: 2
+  ){
+    entryDate
+    status{
+      one{
+        status
+      }
+    }
+  }
+}
+
+mutation delHist{
+  deleteHistory(id:11){
+    id
+  }
+}
+
+query findHist{
+  history(search:"nowy"){
+    asset{
+      assetNr
+    }
+    status{
+      status
+    }
+  }
+}

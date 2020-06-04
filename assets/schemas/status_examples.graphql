@@ -1,0 +1,26 @@
+mutation newStat{
+  createStatus(status: "test"){
+    id
+    status
+  }
+}
+
+mutation editStat{
+  editStatus(id:3, status:"test123"){
+    id
+    status
+  }
+}
+
+mutation delStat{
+  deleteStatus(id:3){
+    id
+  }
+}
+
+query findStat{
+  status(search:"y"){
+    status
+    id
+  }
+}

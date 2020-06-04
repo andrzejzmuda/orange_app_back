@@ -1,0 +1,43 @@
+mutation newAss{
+  createAsset(assetNr:"123", description:"123", eqNr:"1234",
+  manufacturer:2, serialNumber:"123"){
+    id
+    assetNr
+    description
+    eqNr
+    manufacturer {
+      manufacturer{
+        id
+      }
+    }
+    }
+}
+
+mutation editAss{
+  editAsset(id:9,
+    assetNr: "456",
+    eqNr:"456",
+    serialNumber:"456",
+    description:"456",
+    manufacturer:1
+  ){
+    id
+    eqNr
+  }
+}
+
+mutation delAss{
+  deleteAsset(id:7){
+    id
+  }
+}
+
+query findAss{
+  asset(search:"tere"){
+    assetNr
+    manufacturer{
+      id
+      name
+    }
+  }
+}
