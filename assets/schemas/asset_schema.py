@@ -104,6 +104,7 @@ class EditAsset(graphene.Mutation):
     serialNumber = graphene.String()
     manufacturer = graphene.Field(FindManufacturer)
     description = graphene.String()
+    history = graphene.List(HistoryType)
 
     class Arguments:
         id = graphene.Int()
@@ -112,8 +113,9 @@ class EditAsset(graphene.Mutation):
         serialNumber = graphene.String()
         manufacturer = graphene.Int()
         description = graphene.String()
+        history = graphene.List(CreateHistoryInput)
 
-    def mutate(self, info, id, assetNr, eqNr, serialNumber, manufacturer, description):
+    def mutate(self, info, id, assetNr, eqNr, serialNumber, manufacturer, description, history):
         asset = Asset(
             id=id,
             assetNr=assetNr,
@@ -124,13 +126,26 @@ class EditAsset(graphene.Mutation):
         )
         asset.save()
 
+        hist = []
+
+        for n in history:
+            History(
+                asset_id=asset.id,
+                department_id=n.department_id,
+                status_id=n.status,
+                owner=n.owner,
+                inventoried=n.inventoried
+            ).save()
+            hist.append(n)
+
         return EditAsset(
             id=asset.id,
             assetNr=asset.assetNr,
             eqNr=asset.eqNr,
             serialNumber=asset.serialNumber,
             manufacturer=asset.manufacturer.id,
-            description=asset.description
+            description=asset.description,
+            history=hist
         )
 
 
