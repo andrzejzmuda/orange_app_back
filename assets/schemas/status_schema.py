@@ -12,7 +12,7 @@ class StatusType(DjangoObjectType):
 class GetStatus(graphene.ObjectType):
     one = graphene.List(
         StatusType,
-        id=graphene.ID()
+        id=graphene.Int()
     )
 
     def resolve_one(self, info, id=None, **kwargs):
@@ -31,7 +31,7 @@ class FindStatus(graphene.ObjectType):
     status = graphene.List(
         StatusType,
         search=graphene.String(),
-        id=graphene.ID()
+        id=graphene.Int()
     )
 
     def resolve_status(self, info, search=None, id=None, **kwargs):
