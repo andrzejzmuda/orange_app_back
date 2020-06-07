@@ -1,9 +1,9 @@
 import graphene
 from graphene_django import DjangoObjectType
 from django.db.models import Q
-from ..models import Asset, Manufacturer, History, Department
+from ..models import Asset, Manufacturer, History
 from .manufacturer_schema import FindManufacturer
-from .history_schema import HistoryType, CreateHistoryInput, EditHistoryInput
+from .history_schema import HistoryType, CreateHistoryInput
 
 
 class AssetType(DjangoObjectType):
@@ -15,10 +15,17 @@ class FindAsset(graphene.ObjectType):
     asset = graphene.List(
         AssetType,
         search=graphene.String(),
-        id=graphene.ID()
+        id=graphene.Int(),
+        department=graphene.String(),
+        owner=graphene.String(),
+        status=graphene.String(),
+        manufacturer=graphene.String(),
+        skip=graphene.Int(),
+        last=graphene.Int()
     )
 
-    def resolve_asset(self, info, search=None, id=None, last=None, skip=None, **kwargs):
+    def resolve_asset(self, info, search=None, id=None, department=None, owner=None, status=None, manufacturer=None,
+                      last=None, skip=None, **kwargs):
         qs = Asset.objects.all()
 
         if search:
@@ -26,23 +33,43 @@ class FindAsset(graphene.ObjectType):
                 Q(assetNr__icontains=search) |
                 Q(eqNr__icontains=search) |
                 Q(serialNumber__icontains=search) |
-                Q(manufacturer__name__icontains=search) |
-                Q(description__icontains=search) |
-                Q(history__department__detailedName=search) |
-                Q(history__department__name=search) |
-                Q(history__owner=search) |
-                Q(history__status__status=search)
+                Q(description__icontains=search)
             )
             qs = qs.filter(filter)
 
-            if skip:
-                qs = qs[skip::]
-
-            if last:
-                qs = qs.order_by('-entryDate')[:last]
-
         if id:
             qs = qs.filter(id=id)
+
+        if department:
+            filter = (
+                Q(history__department__detailedName__icontains=department) |
+                Q(history__department__name__icontains=department)
+            )
+            qs = qs.filter(filter).order_by('-history__entryDate')
+
+        if owner:
+            filter = (
+                Q(history__owner__icontains=owner)
+            )
+            qs = qs.filter(filter).order_by('-history__entryDate')
+
+        if status:
+            filter = (
+                Q(history__status__status__icontains=status)
+            )
+            qs = qs.filter(filter).order_by('-history__entryDate')
+
+        if manufacturer:
+            filter = (
+                    Q(manufacturer__name__icontains=manufacturer)
+            )
+            qs = qs.filter(filter)
+
+        if skip:
+            qs = qs[skip::]
+
+        if last:
+            qs = qs.order_by('-entryDate')[:last]
 
         return qs
 
