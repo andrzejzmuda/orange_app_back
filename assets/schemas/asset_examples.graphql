@@ -1,6 +1,13 @@
 mutation newAss{
   createAsset(assetNr:"123", description:"123", eqNr:"1234",
-  manufacturer:2, serialNumber:"123"){
+  manufacturer:2, serialNumber:"123", history: [
+      {
+        status: 1
+        departmentId: 1
+        owner:"ijk"
+      }
+    ])
+  {
     id
     assetNr
     description
