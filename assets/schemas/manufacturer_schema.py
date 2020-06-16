@@ -13,7 +13,7 @@ class FindManufacturer(graphene.ObjectType):
     manufacturer = graphene.List(
         ManufacturerType,
         search=graphene.String(),
-        id=graphene.ID()
+        id=graphene.Int()
     )
 
     def resolve_manufacturer(self, info, search=None, id=None, **kwargs):
