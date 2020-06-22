@@ -13,7 +13,7 @@ class FindDepartment(graphene.ObjectType):
     department = graphene.List(
         DepartmentType,
         search=graphene.String(),
-        id=graphene.ID()
+        id=graphene.Int()
     )
 
     def resolve_department(self, info, search=None, id=None, **kwargs):
