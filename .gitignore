@@ -1,4 +1,6 @@
 *.pyc
 */migrations
 .idea
+env.sh
+py_go.py
 orange_app_back/settings.py
