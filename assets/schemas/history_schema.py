@@ -10,7 +10,7 @@ class CreateHistoryInput(graphene.InputObjectType):
     department_id = graphene.Int(required=True)
     status = graphene.Int(required=True)
     owner = graphene.String(required=False)
-    inventoried = graphene.DateTime(required=False)
+    inventoried = graphene.Date(required=False)
 
 
 class EditHistoryInput(graphene.InputObjectType):
@@ -19,7 +19,7 @@ class EditHistoryInput(graphene.InputObjectType):
     department_id = graphene.Int(required=True)
     status = graphene.Int(required=True)
     owner = graphene.String(required=False)
-    inventoried = graphene.DateTime(required=False)
+    inventoried = graphene.Date(required=False)
 
 
 class HistoryType(DjangoObjectType):
@@ -31,7 +31,9 @@ class FindHistory(graphene.ObjectType):
     history = graphene.List(
         HistoryType,
         search=graphene.String(),
-        id=graphene.ID()
+        id=graphene.Int(),
+        entryDate=graphene.Date(),
+        inventoried=graphene.Date()
     )
 
     def resolve_history(self, info, search=None, id=None, entryDate=None, inventoried=None, **kwargs):
@@ -49,13 +51,13 @@ class FindHistory(graphene.ObjectType):
 
         if entryDate:
             filter = (
-                Q(entryDate__icontains=search)
+                Q(entryDate=entryDate)
             )
             qs = qs.filter(filter)
 
         if inventoried:
             filter = (
-                Q(inventoried__icontains=search)
+                Q(inventoried=inventoried)
             )
             qs = qs.filter(filter)
 
@@ -72,14 +74,14 @@ class CreateHistory(graphene.Mutation):
     status = graphene.Field(GetStatus)
     entryDate = graphene.DateTime()
     owner = graphene.String(required=False)
-    inventoried = graphene.DateTime(required=False)
+    inventoried = graphene.Date(required=False)
 
     class Arguments:
         asset = graphene.Int()
         department = graphene.Int()
         status = graphene.Int()
         owner = graphene.String(required=False)
-        inventoried = graphene.DateTime(required=False)
+        inventoried = graphene.Date(required=False)
 
     def mutate(self, info, asset, department, status, owner, inventoried, **kwargs):
         history = History(
@@ -109,7 +111,7 @@ class EditHistory(graphene.Mutation):
     status = graphene.Field(GetStatus)
     entryDate = graphene.DateTime()
     owner = graphene.String(required=False)
-    inventoried = graphene.DateTime(required=False)
+    inventoried = graphene.Date(required=False)
 
     class Arguments:
         id = graphene.Int()
@@ -117,7 +119,7 @@ class EditHistory(graphene.Mutation):
         department = graphene.Int()
         status = graphene.Int()
         owner = graphene.String(required=False)
-        inventoried = graphene.DateTime(required=False)
+        inventoried = graphene.Date(required=False)
 
     def mutate(self, info, id, asset, department, status, owner, inventoried, **kwargs):
         history = History(

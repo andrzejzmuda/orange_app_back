@@ -56,7 +56,7 @@ class History(models.Model):
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True)
     entryDate = models.DateTimeField(auto_now_add=True)
     owner = models.CharField(max_length=255, null=True, blank=True)
-    inventoried = models.DateTimeField(null=True, blank=True)
+    inventoried = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.asset, self.department, self.status, self.entryDate, self.owner, self.inventoried
