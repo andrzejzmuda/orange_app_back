@@ -8,32 +8,32 @@ register = template.Library()
 class Manufacturer(models.Model):
     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         verbose_name_plural = 'Manufacturer'
+
+    def __str__(self):
+        return self.name
 
 
 class Department(models.Model):
     name = models.CharField(max_length=255)
     detailedName = models.CharField(max_length=255, null=True, blank=True)
 
-    def __str__(self):
-        return self.name, self.detailedName
-
     class Meta:
         verbose_name_plural = 'Department'
+
+    def __str__(self):
+        return '%s %s' % (self.name, self.detailedName)
 
 
 class Status(models.Model):
     status = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.status
-
     class Meta:
         verbose_name_plural = 'Status'
+
+    def __str__(self):
+        return self.status
 
 
 class Asset(models.Model):
@@ -43,11 +43,11 @@ class Asset(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, null=True, blank=True)
     description = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.assetNr, self.eqNr, self.serialNumber, self.manufacturer, self.description
-
     class Meta:
         verbose_name_plural = 'Asset'
+
+    def __str__(self):
+        return '%s %s' % (self.assetNr, self.eqNr)
 
 
 class History(models.Model):
@@ -58,8 +58,8 @@ class History(models.Model):
     owner = models.CharField(max_length=255, null=True, blank=True)
     inventoried = models.DateField(null=True, blank=True)
 
-    def __str__(self):
-        return self.asset, self.department, self.status, self.entryDate, self.owner, self.inventoried
-
     class Meta:
         verbose_name_plural = 'History'
+
+    def __str__(self):
+        return self.asset.assetNr
